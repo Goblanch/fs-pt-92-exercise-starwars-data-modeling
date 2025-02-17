@@ -19,6 +19,15 @@ class User(Base):
     
     favorites = relationship('Favorites', backref='user', lazy=True)
 
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "username": self.password,
+            "name": self.name,
+            "last_name": self.last_name,
+            "email": self.email
+        }
+
 
 class Person(Base):
     __tablename__ = 'Person'
@@ -34,7 +43,15 @@ class Person(Base):
     favorites = relationship('Favorites', backref='person', lazy=True)
 
     def to_dict(self):
-        return {}
+        return {
+            "id": self.id,
+            "name": self.name,
+            "gender": self.gender,
+            "birth_year": self.birth_year,
+            "age": self.age,
+            "eye_color": self.eye_color,
+            "mass": self.mass
+        }
     
 class Planet(Base):
     __tablename__ = "Planet"
@@ -51,6 +68,19 @@ class Planet(Base):
 
     favorites = relationship('Favorites', backref='planet', lazy=True)
 
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "climate": self.climate,
+            "terrain": self.terrain,
+            "gravity": self.gravity,
+            "diameter": self.diameter,
+            "orbital_period": self.orbital_period,
+            "rotation_period": self.rotation_period,
+            "population": self.population
+        }
+
 class Favorites(Base):
     __tablename__ = "Favorites"
 
@@ -58,6 +88,14 @@ class Favorites(Base):
     associated_user: Mapped[int] = mapped_column(Integer, ForeignKey('user.id'), nullable=False)
     people_id: Mapped[int] = mapped_column(Integer, ForeignKey('person.id'), nullable=True)
     planet_id: Mapped[int] = mapped_column(Integer, ForeignKey('planet.id'), nullable=True)
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "associated_user": self.associated_user,
+            "people_id": self.people_id,
+            "planet_id": self.planet_id
+        }
 
 
 ## Draw from SQLAlchemy base
